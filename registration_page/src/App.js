@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import InputField from "./components/InputField";
+import PasswordField from "./components/PasswordField";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex h-screen content-center border">
+      <form className="border w-1/2 m-auto p-3 rounded">
+        <InputField label="Username" />
+        <PasswordField label="Password" />
+        <InputField label="Email" />
+        <div className="flex justify-end px-3">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button"
+          >
+            Sign In
+          </button>
+        </div>
+      </form>
     </div>
   );
-}
+};
 
 export default App;
