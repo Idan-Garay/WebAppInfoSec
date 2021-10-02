@@ -1,4 +1,4 @@
-const PasswordField = ({ label }) => {
+const PasswordField = ({ label, dispatch, data, eventType }) => {
   return (
     <div className="w-full md:w-full px-3 mb-6 md:mb-0">
       <label
@@ -12,6 +12,8 @@ const PasswordField = ({ label }) => {
         id="grid-first-name"
         type="password"
         placeholder={label}
+        value={data}
+        onChange={(e) => dispatch({ type: eventType, value: e.target.value })}
       />
       {/* <p className="text-red-500 text-xs italic">Please fill out this field.</p> */}
     </div>
