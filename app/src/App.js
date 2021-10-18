@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,9 +8,20 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import AuthApi from "./AuthApi";
+import Cookie from "js-cookie";
 
 function App() {
   const [auth, setAuth] = useState(false);
+
+  const readCookie = () => {
+    const user = Cookie.get("user");
+    if (user) {
+      setAuth(true);
+    }
+  };
+  useEffect(() => {
+    readCookie();
+  }, []);
 
   return (
     <div className="App">
@@ -28,6 +39,7 @@ const Login = () => {
 
   const handleOnClick = () => {
     Auth.setAuth(true);
+    Cookie.set("user", "loginTrue");
   };
   return (
     <div>
@@ -42,6 +54,7 @@ const Dashboard = () => {
 
   const handleOnClick = () => {
     Auth.setAuth(false);
+    Cookie.remove("user");
   };
   return (
     <div>
