@@ -24,19 +24,29 @@ function App() {
 }
 
 const Login = () => {
+  const Auth = useContext(AuthApi);
+
+  const handleOnClick = () => {
+    Auth.setAuth(true);
+  };
   return (
     <div>
       <h1>Hello World</h1>
-      <button>Login</button>
+      <button onClick={handleOnClick}>Login</button>
     </div>
   );
 };
 
 const Dashboard = () => {
+  const Auth = useContext(AuthApi);
+
+  const handleOnClick = () => {
+    Auth.setAuth(false);
+  };
   return (
     <div>
       <h1>Dashboard</h1>
-      <button>logout</button>
+      <button onClick={handleOnClick}>logout</button>
     </div>
   );
 };
@@ -46,7 +56,7 @@ const Routes = () => {
 
   return (
     <Switch>
-      <Route path="/login" component={Login} />
+      <ProtectedLogin path="/login" auth={Auth.auth} Component={Login} />
       <ProtectedRoute
         path="/dashboard"
         auth={Auth.auth}
@@ -61,6 +71,15 @@ const ProtectedRoute = ({ auth, Component, ...rest }) => {
     <Route
       {...rest}
       render={() => (auth ? <Component /> : <Redirect to="/login" />)}
+    />
+  );
+};
+
+const ProtectedLogin = ({ auth, Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={() => (!auth ? <Component /> : <Redirect to="/dashboard" />)}
     />
   );
 };
