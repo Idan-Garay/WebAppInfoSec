@@ -1,15 +1,24 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Link,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import "./App.css";
+import AuthApi from "./AuthApi";
 
 function App() {
   const [auth, setAuth] = useState(false);
 
   return (
     <div className="App">
-      <Router>
-        <Routes />
-      </Router>
+      <AuthApi.Provider value={{ auth, setAuth }}>
+        <Router>
+          <Routes />
+        </Router>
+      </AuthApi.Provider>
     </div>
   );
 }
@@ -33,16 +42,27 @@ const Dashboard = () => {
 };
 
 const Routes = () => {
+  const Auth = useContext(AuthApi);
+
   return (
     <Switch>
       <Route path="/login" component={Login} />
-      <ProtectedRoute path="/dashboard" component={Dashboard} />
+      <ProtectedRoute
+        path="/dashboard"
+        auth={Auth.auth}
+        Component={Dashboard}
+      />
     </Switch>
   );
 };
 
-const ProtectedRoute = ({ Componenent, ...rest }) => {
-  return <Route {...rest} render={() => <Componenent />} />;
+const ProtectedRoute = ({ auth, Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={() => (auth ? <Component /> : <Redirect to="/login" />)}
+    />
+  );
 };
 
 export default App;
